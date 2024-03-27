@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { input } from "@inquirer/prompts";
 
 import assert from "assert";
@@ -12,6 +13,16 @@ function generatePrimeSeries(count) {
   while (primeNumbers.length < count) {
     if (isPrime(firstNum)) {
       primeNumbers.push(firstNum);
+||||||| parent of 7d09dc8 (Unnecessary comment and block is removed also assertion for postconditions are added)
+function assert(condition,message){
+    if(condition){
+        throw new Error(message);
+        // console.error(message);
+=======
+function assert(condition,message){
+    if(condition){
+        throw new Error(message);
+>>>>>>> 7d09dc8 (Unnecessary comment and block is removed also assertion for postconditions are added)
     }
     firstNum++;
   }
@@ -25,6 +36,7 @@ function isPrime(num) {
   //  primes are always > 1, and they will have a factor other than themselves or 1
   assert(num > 1, "Argument should be greater than 1");
 
+<<<<<<< HEAD
   if (num <= 1) return false;
   if (num <= 3) return true;
   if (num % 2 === 0 || num % 3 === 0) return false;
@@ -34,9 +46,68 @@ function isPrime(num) {
     }
   }
   return true;
+||||||| parent of 7d09dc8 (Unnecessary comment and block is removed also assertion for postconditions are added)
+function prime(a){
+    //pre-contions
+    //must be a number
+    //must be greater than 1
+    //must not be prime
+    let isNotPrime=false;
+    assert(typeof a!=='number',"a non-number parameter is detected");
+    assert(a<2,"parameter must be greater that or equal to 2");
+
+    for(let i=2;i<=Math.sqrt(a);i++){
+        if(a%i===0){
+            isNotPrime=true;
+            assert(isNotPrime,`${a} is not prime number`);
+            break;
+        }
+        // assert(a%i===0,`${a} is not prime number`);
+    }
+   if(!isNotPrime && typeof a==='number' && a>1){
+    console.log(`${a} is a prime number`)
+   }    
+    
+=======
+function prime(a){
+    //pre-contions
+    //must be a number
+    //must not be prime
+    
+    assert(typeof a!=='number',"a non-number parameter is detected");
+    assert(a<2,"parameter must be greater that or equal to 2");
+
+    for(let i=2;i<=Math.sqrt(a);i++){
+        if(a%i===0){
+        return true;
+        }
+    }   
+    return false;
+>>>>>>> 7d09dc8 (Unnecessary comment and block is removed also assertion for postconditions are added)
 }
 
+<<<<<<< HEAD
 //Post-conditions for isPrime function
+||||||| parent of 7d09dc8 (Unnecessary comment and block is removed also assertion for postconditions are added)
+//post-conditions
+prime(2);
+prime(7);
+prime(1);
+prime();
+prime("Hello");
+prime(93);
+prime(10);
+=======
+//post-conditions
+assert(prime(2), "2 is not a prime number");
+assert(prime(7), "7 is not a prime number");
+assert(prime(1), "1 is not a prime number");
+assert(prime(), "No parameter is detected");
+assert(prime("Hello"), "Hello is not a prime number");
+assert(prime(93), "93 is not a prime number");
+assert(prime(10), "10 is not a prime number");
+assert(prime(47), "47 is not a prime number");
+>>>>>>> 7d09dc8 (Unnecessary comment and block is removed also assertion for postconditions are added)
 
 //Test cases (postive)
 assert(isPrime(2), "2 is a prime number");
