@@ -21,13 +21,17 @@ function prime(a){
             assert(isNotPrime,`${a} is not prime number`);
             break;
         }
+        // assert(a%i===0,`${a} is not prime number`);
     }
-
+   if(!isNotPrime && typeof a==='number' && a>1){
+    console.log(`${a} is a prime number`)
+   }    
     
 }
 
 //post-conditions
 prime(2);
+prime(7);
 prime(1);
 prime();
 prime("Hello");
