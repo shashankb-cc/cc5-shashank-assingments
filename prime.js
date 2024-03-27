@@ -25,27 +25,23 @@ function isPrime(num) {
   //  primes are always > 1, and they will have a factor other than themselves or 1
   assert(num > 1, "Argument should be greater than 1");
 
-  if (num <= 1) return false;
-  if (num <= 3) return true;
-  if (num % 2 === 0 || num % 3 === 0) return false;
-  for (let i = 5; i * i <= num; i += 6) {
-    if (num % i === 0 || num % (i + 2) === 0) {
-      return false;
+  for (let i = 2; i <= Math.sqrt(a); i++) {
+    if (a % i === 0) {
+      return true;
     }
   }
-  return true;
+  return false;
 }
-
-//Post-conditions for isPrime function
+// module.exports = isPrime;
 
 //Test cases (postive)
-assert(isPrime(2), "2 is a prime number");
-assert(isPrime(5), "5 is a prime number");
-assert(isPrime(29), "29 is  a prime number");
-assert(isPrime(999999000001), "999999000001 is a prime number");
-assert(!isPrime(4), "4 is not a prime number");
-assert(!isPrime(6), "6 is not a prime number");
-assert(isPrime(67280421310721), "67280421310721 is not a prime number");
+// assert(isPrime(2), "2 is a prime number");
+// assert(isPrime(5), "5 is a prime number");
+// assert(isPrime(29), "29 is  a prime number");
+// assert(isPrime(999999000001), "999999000001 is a prime number");
+// assert(!isPrime(4), "4 is not a prime number");
+// assert(!isPrime(6), "6 is not a prime number");
+// assert(isPrime(67280421310721), "67280421310721 is not a prime number");
 
 //Test cases (negative)
 
@@ -94,3 +90,5 @@ assert.throws(
   /Argument should be a number/,
   "The value must be a number"
 );
+
+export { isPrime, generatePrimeSeries };

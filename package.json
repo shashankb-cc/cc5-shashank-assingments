@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "description": "Creating node project",
   "main": "index.js",
-  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest",
+    "run-prime": "nodemon ./prime.js"
   },
   "keywords": [
     "tdd",
@@ -15,9 +15,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@inquirer/prompts": "^4.3.0"
+    "@inquirer/prompts": "^4.3.0",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "prettier": "^3.2.5"
+    "prettier": "^3.2.5",
+    "nodemon": "^3.1.0",
+    "vitest": "^1.4.0"
   }
 }
