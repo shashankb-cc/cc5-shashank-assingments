@@ -1,0 +1,16 @@
+{
+  "name": "node-project",
+  "version": "0.0.1",
+  "description": "Creating node project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "tdd",
+    "js",
+    "data-structure"
+  ],
+  "author": "",
+  "license": "ISC"
+}
