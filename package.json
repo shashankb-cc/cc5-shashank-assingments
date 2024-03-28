@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Creating node project",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,5 +13,11 @@
     "data-structure"
   ],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@inquirer/prompts": "^4.3.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5"
+  }
 }
