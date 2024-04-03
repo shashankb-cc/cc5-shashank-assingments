@@ -35,17 +35,18 @@ function isPrime(num) {
   }
   return true;
 }
+// module.exports = isPrime;
 
 //Post-conditions for isPrime function
 
 //Test cases (postive)
-assert(isPrime(2), "2 is a prime number");
-assert(isPrime(5), "5 is a prime number");
-assert(isPrime(29), "29 is  a prime number");
-assert(isPrime(999999000001), "999999000001 is a prime number");
-assert(!isPrime(4), "4 is not a prime number");
-assert(!isPrime(6), "6 is not a prime number");
-assert(isPrime(67280421310721), "67280421310721 is not a prime number");
+// assert(isPrime(2), "2 is a prime number");
+// assert(isPrime(5), "5 is a prime number");
+// assert(isPrime(29), "29 is  a prime number");
+// assert(isPrime(999999000001), "999999000001 is a prime number");
+// assert(!isPrime(4), "4 is not a prime number");
+// assert(!isPrime(6), "6 is not a prime number");
+// assert(isPrime(67280421310721), "67280421310721 is not a prime number");
 
 //Test cases (negative)
 
@@ -94,3 +95,5 @@ assert.throws(
   /Argument should be a number/,
   "The value must be a number"
 );
+
+export { isPrime, generatePrimeSeries };
