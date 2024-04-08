@@ -1,5 +1,4 @@
-import { expect, test } from "vitest";
-import { isEqual } from "lodash";
+import { expect, test, vi } from "vitest";
 import {
   createList,
   addItemToList,
@@ -10,6 +9,8 @@ import {
   insertBefore,
   filterList,
   isNumber,
+  isString,
+  traverse,
 } from "./linked-list";
 
 /**
@@ -83,7 +84,7 @@ test("addItemToList tests", () => {
   expect(listNode1.data).toBe(1);
   expect(listNode1.next).toBeNull();
 
-  //some more items
+  // some more items
 
   const listNode2 = addItemToList(listRef, "two");
   expect(listNode2.data).toBe("two");
@@ -106,9 +107,13 @@ test("addItemToList tests", () => {
   expect(listRef.head).toBe(listNode1);
   expect(listRef.tail).toBe(listNode4);
 
-  //lets test list can give as array representation
-  //This converts list to array format and returns it
-  let listAsArray = arrayFromList(listRef);
+  const mockFn = vi.fn();
+  traverse(listRef, mockFn);
+  expect(mockFn.mock.calls.length).toBe(4);
+
+  // lets test list can give as array representation
+  // This converts list to array format and returns it
+  const listAsArray = arrayFromList(listRef);
   expect(listAsArray).toEqual([
     1,
     "two",
@@ -165,4 +170,8 @@ test("addItemToList tests", () => {
   const resultArr = filterList(listRef, isNumber);
   expect(resultArr).toEqual([1, 2, 3]);
   expect(resultArr).not.toBe(null);
+
+  const resultArrStr = filterList(listRef, isString);
+  expect(resultArrStr).toEqual(["two", "three", "five"]);
+  expect(resultArrStr).not.toBe(null);
 });
