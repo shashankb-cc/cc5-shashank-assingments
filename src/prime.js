@@ -1,9 +1,22 @@
-import { input } from "@inquirer/prompts";
-
 import assert from "assert";
 
+function isPrime(num) {
+  // pre conditions
+  // its must always a number
+  assert(typeof num === "number", "Argument should be a number");
+  //  primes are always > 1, and they will have a factor other than themselves or 1
+  assert(num > 1, "Argument should be greater than 1");
+
+  // eslint-disable-next-line no-plusplus
+  for (let i = 2; i <= Math.sqrt(num); i++) {
+    if (num % i === 0) {
+      return false;
+    }
+  }
+  return true;
+}
 function generatePrimeSeries(count) {
-  //pre-condition
+  // pre-condition
   assert(typeof count === "number", "Argument should be a number");
   assert(count > 0, "Argument should be greater than or equal to 1");
 
@@ -13,32 +26,15 @@ function generatePrimeSeries(count) {
     if (isPrime(firstNum)) {
       primeNumbers.push(firstNum);
     }
+    // eslint-disable-next-line no-plusplus
     firstNum++;
   }
   return primeNumbers;
 }
 
-function isPrime(num) {
-  // pre conditions
-  //its must always a number
-  assert(typeof num === "number", "Argument should be a number");
-  //  primes are always > 1, and they will have a factor other than themselves or 1
-  assert(num > 1, "Argument should be greater than 1");
+// module.exports = isPrime;
 
-  if (num <= 1) return false;
-  if (num <= 3) return true;
-  if (num % 2 === 0 || num % 3 === 0) return false;
-  for (let i = 5; i * i <= num; i += 6) {
-    if (num % i === 0 || num % (i + 2) === 0) {
-      return false;
-    }
-  }
-  return true;
-}
-
-//Post-conditions for isPrime function
-
-//Test cases (postive)
+// Test cases (postive)
 assert(isPrime(2), "2 is a prime number");
 assert(isPrime(5), "5 is a prime number");
 assert(isPrime(29), "29 is  a prime number");
@@ -47,7 +43,7 @@ assert(!isPrime(4), "4 is not a prime number");
 assert(!isPrime(6), "6 is not a prime number");
 assert(isPrime(67280421310721), "67280421310721 is not a prime number");
 
-//Test cases (negative)
+// Test cases (negative)
 
 assert.throws(
   () => !isPrime(-2),
@@ -65,7 +61,7 @@ assert.throws(
   "The type should be a number"
 );
 
-//Post-conditions for generatePrimeSeries
+// Post-conditions for generatePrimeSeries
 
 assert.deepStrictEqual(
   generatePrimeSeries(5),
@@ -94,3 +90,5 @@ assert.throws(
   /Argument should be a number/,
   "The value must be a number"
 );
+
+export { isPrime, generatePrimeSeries };

@@ -1,17 +1,18 @@
 import assert from "assert";
 
 function fib(index) {
-  //preconditions
+  // preconditions
   assert(typeof index === "number", "Argument must be a number");
   assert(index >= 0, "Argument must be greater than or equal to 0");
-  //above 98 the value of fibbonocci series exceeds the js precision scale
-  assert(index<=98,"Index value must be less than 99")
+  // above 98 the value of fibbonocci series exceeds the js precision scale
+  assert(index <= 98, "Index value must be less than 99");
 
   if (index <= 1) {
     return BigInt(index);
   }
-  let a = 0,
-    b = 1;
+  let a = 0;
+  let b = 1;
+  // eslint-disable-next-line no-plusplus
   for (let i = 2; i <= index; i++) {
     const next = a + b;
     a = b;
@@ -31,10 +32,11 @@ assert.equal(fib(50), 12586269025, `Value for index 50 is 12586269025`);
 assert.deepStrictEqual(
   fib(98),
   135301852344706760000,
-  `Value for index 98 is 135301852344706760000`
+  `Value for index 98 is 135301852344706760000`,
 );
 
-//98 is the last number to which we can calculate the fibonocci series in the javascipt precison scale
+// eslint-disable-next-line max-len
+// 98 is the last number to which we can calculate the fibonocci series in the javascipt precison scale
 // assert.equal(fib(99),218922995834555169026, `Value for index 99 is 218922995834555169026`);
 
 assert.throws(() => fib("a"), Error, "Argument must be a number");
@@ -42,10 +44,6 @@ assert.throws(() => fib([]), Error, "Argument must be a number");
 assert.throws(
   () => fib(-1),
   Error,
-  "Argument must be greater than or equal to 0"
+  "Argument must be greater than or equal to 0",
 );
-assert.throws(
-  () => fib(99),
-  Error,
-  "Argument value  must be less than 99"
-);
+assert.throws(() => fib(99), Error, "Argument value  must be less than 99");
