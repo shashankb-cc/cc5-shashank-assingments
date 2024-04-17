@@ -1,11 +1,4 @@
-<<<<<<< HEAD
 import { expect, test, vi } from "vitest";
-||||||| 80ff0de
-import { expect, test } from "vitest";
-import { isEqual } from "lodash";
-=======
-import { expect, test } from "vitest";
->>>>>>> linkedlist
 import {
   createList,
   addItemToList,
@@ -16,13 +9,9 @@ import {
   insertBefore,
   filterList,
   isNumber,
-<<<<<<< HEAD
   isString,
   traverse,
-||||||| 80ff0de
-=======
   isString,
->>>>>>> linkedlist
 } from "./linked-list";
 
 /**
@@ -119,7 +108,6 @@ test("addItemToList tests", () => {
   expect(listRef.head).toBe(listNode1);
   expect(listRef.tail).toBe(listNode4);
 
-<<<<<<< HEAD
   const mockFn = vi.fn();
   traverse(listRef, mockFn);
   expect(mockFn.mock.calls.length).toBe(4);
@@ -127,15 +115,6 @@ test("addItemToList tests", () => {
   // lets test list can give as array representation
   // This converts list to array format and returns it
   const listAsArray = arrayFromList(listRef);
-||||||| 80ff0de
-  //lets test list can give as array representation
-  //This converts list to array format and returns it
-  let listAsArray = arrayFromList(listRef);
-=======
-  // lets test list can give as array representation
-  // This converts list to array format and returns it
-  const listAsArray = arrayFromList(listRef);
->>>>>>> linkedlist
   expect(listAsArray).toEqual([
     1,
     "two",
