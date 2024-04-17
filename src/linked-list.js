@@ -275,3 +275,18 @@ export function isNumber(data) {
 export function isString(data) {
   return typeof data === "string";
 }
+export function mockFunction() {
+  function fn() {
+    fn.mock = { count: fn.mock.count + 1 };
+  }
+  fn.mock = { count: 0 };
+}
+const mockFunctionCreator = mockFunction();
+
+export function traverse(listRef, visit) {
+  let currentNode = listRef.head;
+  while (currentNode !== null) {
+    visit(currentNode);
+    currentNode = currentNode.next;
+  }
+}

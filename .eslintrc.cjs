@@ -23,4 +23,5 @@ module.exports = {
     "linebreak-style": "off",
     "no-plusplus": "off",
   },
+  "max-classes-per-file": ["error", { ignoreExpressions: true, max: 2 }],
 };
