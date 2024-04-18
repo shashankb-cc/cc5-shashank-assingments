@@ -3,11 +3,12 @@ module.exports = {
     es2021: true,
     node: true,
   },
-  extends: ["airbnb-base", "prettier"],
+  extends: ["airbnb-base", "prettier","plugin:vitest-globals/recommended"],
   overrides: [
     {
       env: {
         node: true,
+        "vitest-globals/env": true
       },
       files: [".eslintrc.{js,cjs}"],
       parserOptions: {
