@@ -1,4 +1,4 @@
-import { expect, test } from "vitest";
+import { afterAll, beforeEach, describe, expect, test } from "vitest";
 import {
   fibonacciNumbersAtIndices,
   generateFahrenheitArray,
@@ -24,6 +24,13 @@ import {
   totalSalaryPaidToEmployees,
   getFullNameOfEmployees,
   getStringContainingAllEmails,
+  findFruitOrNutWithHighestNutrition,
+  getArrayOfUniqueNutritions,
+  getArrayOfUniqueHealthConditions,
+  getArrayOfCommonHealthConditions,
+  modifiedFruitsAndNutsArray,
+  fruitsOrNutsSolvingBoneIssue,
+  fruitOrNutWithMaximumNutritionTypes,
 } from "./assignment";
 
 // Tests for question 1 and 2
@@ -806,5 +813,182 @@ water 20`);
     expect(getStringContainingAllEmails(employees)).toEqual(
       "mollyrojas@plasmox.com, margueritesantiago@plasmox.com, evelynoneil@plasmox.com, consuelocase@plasmox.com, earlinebush@plasmox.com, sanfordhurley@plasmox.com, toddgomez@plasmox.com"
     );
+  });
+});
+describe("Tests for Question 15", () => {
+  let fruits;
+  beforeEach(() => {
+    fruits = [
+      {
+        name: "Banana",
+        type: "fruit",
+        treats: [
+          "constipation",
+          "vitamin deficiency",
+          "skin issues",
+          "sleep problems",
+        ],
+        nutritions: {
+          protein: 8,
+          carbs: 40,
+          sugar: 30,
+          vitamins: 45,
+        },
+      },
+      {
+        name: "Badam",
+        type: "nut",
+        treats: ["bp", "protein deficiency", "skin issues", "sugar"],
+        nutritions: {
+          protein: 18,
+          carbs: 20,
+          sugar: 20,
+          vitamins: 65,
+        },
+      },
+      {
+        name: "Cashew",
+        type: "nut",
+        treats: ["bp", "protein deficiency", "skin issues", "bone issues"],
+        nutritions: {
+          protein: 22,
+          carbs: 22,
+          vitamins: 60,
+        },
+      },
+      {
+        name: "Wallnut",
+        type: "nut",
+        treats: ["bp", "protein deficiency", "skin issues", "bone issues"],
+        nutritions: {
+          protein: 33,
+          carbs: 26,
+          vitamins: 64,
+        },
+      },
+      {
+        name: "Apple",
+        type: "fruit",
+        treats: ["heart problems", "skin issues", "bone issues", "migraine"],
+        nutritions: {
+          protein: 22,
+          carbs: 22,
+          vitamins: 60,
+        },
+      },
+    ];
+  });
+  afterAll(() => {
+    fruits = null;
+  });
+  //Test block for findFruitOrNutWithHighestNutritio
+  test("Object with nutrition and fruit or nut containing highest of that nutrition", () => {
+    expect(findFruitOrNutWithHighestNutrition(fruits)).toEqual({
+      carbs: "Banana",
+      protein: "Wallnut",
+      sugar: "Banana",
+      vitamins: "Badam",
+    });
+  });
+
+  //Test block for unique nutrition values
+  test("Array with unique nutrition values", () => {
+    expect(getArrayOfUniqueNutritions(fruits)).toEqual([
+      "protein",
+      "carbs",
+      "sugar",
+      "vitamins",
+    ]);
+  });
+
+  //Test block fpr unique health traits
+  test("Array with unique health conditions ", () => {
+    expect(getArrayOfUniqueHealthConditions(fruits)).toEqual([
+      "constipation",
+      "vitamin deficiency",
+      "skin issues",
+      "sleep problems",
+      "bp",
+      "protein deficiency",
+      "sugar",
+      "bone issues",
+      "heart problems",
+      "migraine",
+    ]);
+  });
+
+  //Test block for getting common health traits among the nuts
+  test("Get common health traits cured by nuts", () => {
+    expect(getArrayOfCommonHealthConditions(fruits)).toEqual([
+      "bp",
+      "protein deficiency",
+      "skin issues",
+    ]);
+  });
+
+  //Test block for modified fruitAndNutArray
+  test("Get modified fruitAndNutArray with key called totalNutrition", () => {
+    expect(modifiedFruitsAndNutsArray(fruits)).toEqual([
+      {
+        name: "Banana",
+        type: "fruit",
+        treats: [
+          "constipation",
+          "vitamin deficiency",
+          "skin issues",
+          "sleep problems",
+        ],
+        nutritions: { protein: 8, carbs: 40, sugar: 30, vitamins: 45 },
+        totalNutrition: 4,
+      },
+      {
+        name: "Badam",
+        type: "nut",
+        treats: ["bp", "protein deficiency", "skin issues", "sugar"],
+        nutritions: { protein: 18, carbs: 20, sugar: 20, vitamins: 65 },
+        totalNutrition: 4,
+      },
+      {
+        name: "Cashew",
+        type: "nut",
+        treats: ["bp", "protein deficiency", "skin issues", "bone issues"],
+        nutritions: { protein: 22, carbs: 22, vitamins: 60 },
+        totalNutrition: 3,
+      },
+      {
+        name: "Wallnut",
+        type: "nut",
+        treats: ["bp", "protein deficiency", "skin issues", "bone issues"],
+        nutritions: { protein: 33, carbs: 26, vitamins: 64 },
+        totalNutrition: 3,
+      },
+      {
+        name: "Apple",
+        type: "fruit",
+        treats: ["heart problems", "skin issues", "bone issues", "migraine"],
+        nutritions: { protein: 22, carbs: 22, vitamins: 60 },
+        totalNutrition: 3,
+      },
+    ]);
+  });
+
+  //Test block for total nutrition values
+  test("", () => {});
+
+  //Test block for which treats bone issue
+  test("Fruits or nuts that solves bone issue", () => {
+    expect(fruitsOrNutsSolvingBoneIssue(fruits)).toEqual([
+      "Cashew",
+      "Wallnut",
+      "Apple",
+    ]);
+  });
+
+  //Test block for fruit or nuts with max nutrition types
+  test("Get the fruits or nuts with maximun nutrtion types", () => {
+    expect(fruitOrNutWithMaximumNutritionTypes(fruits)).toEqual([
+      "Banana",
+      "Badam",
+    ]);
   });
 });

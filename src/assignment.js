@@ -193,7 +193,7 @@ export function getSecondLargestNumber(numbers) {
       secondLargest = number;
     }
   });
-  return secondLargest ;
+  return secondLargest;
 }
 
 /**
@@ -214,7 +214,7 @@ export function getSecondLargestElementWithReduce(nums) {
     },
     [Number.MIN_VALUE, Number.MIN_VALUE] // Initial values
   );
-  return secondLargest ;
+  return secondLargest;
 }
 
 /**
@@ -349,4 +349,122 @@ export function getStringContainingAllEmails(employees) {
       return emailString + currentEmployee.email + ", ";
     }
   }, "");
+}
+
+/**
+ * Finds the fruit or nut with the highest nutrition content for each nutrient.
+ * @param {Array} fruitsAndNuts - An array of objects representing fruits or nuts, each containing nutritional information.
+ * @returns {Object} An object containing a key for each nutrient, and the value is the name of the fruit or nut with the highest content of that nutrient.
+ */
+export function findFruitOrNutWithHighestNutrition(fruitsAndNuts) {
+  let nutritionValues = {};
+  return fruitsAndNuts.reduce((nutritionAndFruit, currentFruit) => {
+    Object.entries(currentFruit.nutritions).forEach(([key, value]) => {
+      if (Object.keys(nutritionAndFruit).includes(key)) {
+        if (value > nutritionValues[key]) {
+          nutritionAndFruit[key] = currentFruit.name;
+          nutritionValues[key] = value;
+        }
+      } else {
+        nutritionAndFruit[key] = currentFruit.name;
+        nutritionValues[key] = value;
+      }
+    });
+    return nutritionAndFruit;
+  }, {});
+}
+
+/**
+ * Retrieves an array of unique nutrition types from an array of fruits.
+ * @param {Array<Object>} fruitsAndNuts - An array of fruit objects, each containing nutrition information.
+ * @returns {Array<string>} - An array containing unique nutrition types present in the provided fruits.
+ */
+export function getArrayOfUniqueNutritions(fruitsAndNuts) {
+  return fruitsAndNuts.reduce((arrayWithFruitsAndNuts, currentFruit) => {
+    Object.keys(currentFruit.nutritions).map((nutrition) => {
+      if (!arrayWithFruitsAndNuts.includes(nutrition)) {
+        arrayWithFruitsAndNuts.push(nutrition);
+      }
+    });
+    return arrayWithFruitsAndNuts;
+  }, []);
+}
+
+/**
+ * Retrieves an array of unique health conditions treated by the given fruits.
+ * @param {Array<Object>} fruitsAndNuts - An array of fruit objects, each containing health condition treatment information.
+ * @returns {Array<string>} - An array containing unique health conditions treated by the provided fruits.
+ */
+export function getArrayOfUniqueHealthConditions(fruitsAndNuts) {
+  return fruitsAndNuts.reduce((arrayWithHeathCondition, currentFruit) => {
+    currentFruit.treats.map((treat) => {
+      if (!arrayWithHeathCondition.includes(treat)) {
+        arrayWithHeathCondition.push(treat);
+      }
+    });
+    return arrayWithHeathCondition;
+  }, []);
+}
+
+/**
+ * Retrieves an array containing common health conditions treated by all nut fruits.
+ * @param {Array<Object>} fruitsAndNuts - An array of fruit objects containing health condition treatment information.
+ * @returns {Array<string>} - An array containing common health conditions treated by all nut fruits.
+ */
+export function getArrayOfCommonHealthConditions(fruitsAndNuts) {
+  return fruitsAndNuts
+    .filter((fruitInfo) => fruitInfo.type === "nut")
+    .map((fruitTreat) => fruitTreat.treats)
+    .reduce((commonTreats, currentTreats) => {
+      if (commonTreats.length === 0) {
+        return currentTreats;
+      }
+      return commonTreats.filter((treat) => currentTreats.includes(treat));
+    }, []);
+}
+/**
+ * Modifies an array of fruit and nut objects by adding a 'totalNutrition' property to each object,
+ * representing the total number of nutritional values present in the 'nutritions' object.
+ * @param {Array<Object>} fruitsAndNuts - An array of fruit and nut objects containing nutritional information.
+ * @returns {Array<Object>} - The modified array of fruit and nut objects with the 'totalNutrition' property added.
+ */
+export function modifiedFruitsAndNutsArray(fruitsAndNuts) {
+  return fruitsAndNuts.map((fruitOrNut) => {
+    fruitOrNut.totalNutrition = Object.values(fruitOrNut.nutritions).length;
+    return fruitOrNut;
+  });
+}
+
+export function getTotalNutritionValueOfAll(fruitsAndNuts) {}
+
+/**
+ * Retrieves an array of names of fruits and nuts that treat bone issues.
+ * @param {Array<Object>} fruitsAndNuts - An array of fruit and nut objects containing health condition treatment information.
+ * @returns {Array<string>} - An array containing names of fruits and nuts that treat bone issues.
+ */
+export function fruitsOrNutsSolvingBoneIssue(fruitsAndNuts) {
+  return fruitsAndNuts
+    .filter((fruitOrNut) =>
+      Object.values(fruitOrNut.treats).includes("bone issues")
+    )
+    .map((fruitObject) => fruitObject.name);
+}
+
+/**
+ * Retrieves the name(s) of the fruit(s) or nut(s) with the maximum number of nutrition types.
+ * @param {Array<Object>} fruitAndNutArray - An array of fruit and nut objects containing nutritional information.
+ * @returns {Array<string>} - An array containing the name(s) of the fruit(s) or nut(s) with the maximum number of nutrition types.
+ */
+export function fruitOrNutWithMaximumNutritionTypes(fruitAndNutArray) {
+  let largest = 0;
+  return modifiedFruitsAndNutsArray(fruitAndNutArray).reduce(
+    (maxNutritionFruit, currentFruitOrNut) => {
+      if (currentFruitOrNut.totalNutrition >= largest) {
+        largest = currentFruitOrNut.totalNutrition;
+        maxNutritionFruit.push(currentFruitOrNut.name);
+      }
+      return maxNutritionFruit;
+    },
+    []
+  );
 }
