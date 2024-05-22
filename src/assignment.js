@@ -430,12 +430,35 @@ export function getArrayOfCommonHealthConditions(fruitsAndNuts) {
  */
 export function modifiedFruitsAndNutsArray(fruitsAndNuts) {
   return fruitsAndNuts.map((fruitOrNut) => {
-    fruitOrNut.totalNutrition = Object.values(fruitOrNut.nutritions).length;
+    const nutritionValues = Object.values(fruitOrNut.nutritions);
+    const totalNutrition = nutritionValues.reduce((acc, val) => acc + val, 0);
+    fruitOrNut.totalNutrition = totalNutrition;
     return fruitOrNut;
   });
 }
 
-export function getTotalNutritionValueOfAll(fruitsAndNuts) {}
+export function getTotalNutritionValueOfAll(fruitsAndNuts) {
+  const sumNutritions = (items) => {
+    return items.reduce((acc, item) => {
+      for (const [key, value] of Object.entries(item.nutritions)) {
+        if (acc[key] === undefined) {
+          acc[key] = value;
+        } else {
+          acc[key] += value;
+        }
+      }
+      return acc;
+    }, {});
+  };
+
+  const fruits = fruitsAndNuts.filter((item) => item.type === "fruit");
+  const nuts = fruitsAndNuts.filter((item) => item.type === "nut");
+
+  return {
+    fruits: sumNutritions(fruits),
+    nuts: sumNutritions(nuts),
+  };
+}
 
 /**
  * Retrieves an array of names of fruits and nuts that treat bone issues.
@@ -468,3 +491,242 @@ export function fruitOrNutWithMaximumNutritionTypes(fruitAndNutArray) {
     []
   );
 }
+
+/**
+ * Finds fruits or nuts that are effective in treating migraines and have vitamin content greater than or equal to 60.
+ * @param {object[]} fruitsAndNuts - An array of fruit and nut objects.
+ * @returns {string[]} - An array containing names of fruits or nuts meeting the criteria.
+ */
+export function findMigraineSolversWithVitamins(fruitsAndNuts) {
+  return fruitsAndNuts
+    .filter(
+      (item) =>
+        item.treats.includes("migraine") && item.nutritions.vitamins >= 60
+    )
+    .map((item) => item.name);
+}
+
+/**
+ * Finds the fruit or nut with the lowest carb content.
+ * @param {object[]} fruitsAndNuts - An array of fruit and nut objects.
+ * @returns {string} - The name of the fruit or nut with the lowest carb content.
+ */
+export function findLowestCarbFruitOrNut(fruitsAndNuts) {
+  const itemsWithCarbs = fruitsAndNuts.filter(
+    (item) => item.nutritions.carbs !== undefined
+  );
+  const lowestCarbItem = itemsWithCarbs.reduce((lowest, item) => {
+    return item.nutritions.carbs < lowest.nutritions.carbs ? item : lowest;
+  }, itemsWithCarbs[0]);
+  return lowestCarbItem.name;
+}
+
+/**
+ * Calculates the total protein intake from nuts that treat sugar issues.
+ * @param {object[]} fruitsAndNuts - An array of fruit and nut objects.
+ * @returns {number} - The total protein intake from nuts treating sugar issues.
+ */
+export function totalProteinIntake(fruitsAndNuts) {
+  return fruitsAndNuts
+    .filter((item) => item.type === "nut" && item.treats.includes("sugar"))
+    .reduce((total, item) => total + item.nutritions.protein, 0);
+}
+
+/**
+ * Calculates the total vitamins intake from fruits and nuts excluding those with sugar content.
+ * @param {object[]} fruitsAndNuts - An array of fruit and nut objects.
+ * @returns {number} - The total vitamins intake from fruits and nuts excluding those with sugar content.
+ */
+export function totalVitaminsIntakeWithoutSugarNutrition(fruitsAndNuts) {
+  const fruitsWithoutSugar = fruitsAndNuts.filter(
+    (item) =>
+      (item.type === "fruit" && item.nutritions.sugar === undefined) ||
+      item.type === "nut"
+  );
+  const totalVitamins = fruitsWithoutSugar.reduce(
+    (total, item) => total + item.nutritions.vitamins,
+    0
+  );
+
+  return totalVitamins;
+}
+
+/**
+ * Generates an object containing odd and even numbers up to n.
+ * @param {number} n - The maximum number.
+ * @returns {object} - An object containing arrays of odd and even numbers.
+ */
+export function getOddEvenNumbersSum(n) {
+  let numbers = [];
+  for (let i = 1; i <= n; i++) {
+    numbers.push(i);
+  }
+
+  function getOddEvenNumbers(numbers) {
+    return numbers.reduce(
+      (acc, num) => {
+        if (num % 2 === 0) {
+          acc.even.push(num);
+        } else {
+          acc.odd.push(num);
+        }
+        return acc;
+      },
+      { odd: [], even: [] }
+    );
+  }
+
+  return getOddEvenNumbers(numbers);
+}
+
+/**
+ * Calculates the sum of odd and even numbers from the provided object.
+ * @param {object} oddEvenNumbers - An object containing arrays of odd and even numbers.
+ * @returns {object} - An object containing the sum of odd and even numbers.
+ */
+export function calculateSumOfOddAndEven(oddEvenNumbers) {
+  const oddSum = oddEvenNumbers.odd.reduce((sum, num) => sum + num, 0);
+  const evenSum = oddEvenNumbers.even.reduce((sum, num) => sum + num, 0);
+  const result = {
+    odd: oddSum,
+    even: evenSum,
+  };
+
+  return result;
+}
+
+/**
+ * Generates an array of alphabets from a starting letter to an ending letter.
+ * @param {string} startingLetter - The starting letter.
+ * @param {string} endingLetter - The ending letter.
+ * @returns {string[]} - An array of alphabets from startingLetter to endingLetter.
+ */
+export function generateAlphabets(startingLetter, endingLetter) {
+  const alphabets = [];
+  const startingCharCode = startingLetter.charCodeAt(0);
+  const endingCharCode = endingLetter.charCodeAt(0);
+  for (let i = startingCharCode; i <= endingCharCode; i++) {
+    alphabets.push(String.fromCharCode(i));
+  }
+  return alphabets;
+}
+
+/**
+ * Generates an object containing vowels and consonants from the provided array of alphabets.
+ * @param {string[]} alphabets - An array of alphabets.
+ * @returns {object} - An object containing arrays of vowels and consonants.
+ */
+export function generateAlphabetObject(alphabets) {
+  const vowels = alphabets.filter((letter) => "aeiou".includes(letter));
+  const consonants = alphabets.filter((letter) => !"aeiou".includes(letter));
+  const result = {
+    vowels: vowels,
+    consonants: consonants,
+  };
+
+  return result;
+}
+
+/**
+ * Retrieves the names of all actors without duplicates from the provided movie data.
+ * @param {object[]} movieData - An array of movie objects.
+ * @returns {string[]} - An array containing names of all actors.
+ */
+export function getAllActorsName(movieData) {
+  return movieData
+    .map((item) => item.cast)
+    .reduce((actorsArray, castArray) => {
+      castArray.forEach((actor) => {
+        if (!actorsArray.includes(actor)) {
+          actorsArray = [...actorsArray, actor];
+        }
+      });
+      return actorsArray;
+    }, []);
+}
+
+/**
+ * Retrieves up to three movie titles per year from the provided movie data.
+ * @param {object[]} movieData - An array of movie objects.
+ * @returns {object} - An object containing movie titles per year.
+ */
+export function getThreeMoviesPerYear(movieData) {
+  return movieData.reduce((moviesObject, movie) => {
+    if (!moviesObject[movie.year]) {
+      moviesObject[movie.year] = [];
+    }
+    if (moviesObject[movie.year].length < 3) {
+      moviesObject[movie.year] = [...moviesObject[movie.year], movie.title];
+    }
+    return moviesObject;
+  }, {});
+}
+
+/**
+ * Trims leading whitespaces from the provided string.
+ * @param {string} str - The input string.
+ * @returns {string} - The string with leading whitespaces removed.
+ */
+function trimLeading(str) {
+  return str.replace(/^\s+/, "");
+}
+
+/**
+ * Trims trailing whitespaces from the provided string.
+ * @param {string} str - The input string.
+ * @returns {string} - The string with trailing whitespaces removed.
+ */
+function trimTrailing(str) {
+  return str.replace(/\s+$/, "");
+}
+
+/**
+ * Replaces multiple spaces between words with a single space in the provided string.
+ * @param {string} str - The input string.
+ * @returns {string} - The string with multiple spaces replaced by a single space.
+ */
+function singleSpace(str) {
+  return str.replace(/\s+/g, " ");
+}
+
+/**
+ * Composes multiple functions into a single function that processes an initial string from right to left.
+ * @param  {...function} functions - The functions to implement compose.
+ * @returns {function} - The composed function.
+ */
+function compose(...functions) {
+  return function (initialString) {
+    return functions.reduceRight(
+      (processedString, func) => func(processedString),
+      initialString
+    );
+  };
+}
+
+/**
+ * Pipes multiple functions into a single function that processes an initial string from left to right.
+ * @param  {...function} functions - The functions to implement pipe.
+ * @returns {function} - The piped function.
+ */
+function pipe(...functions) {
+  return function (initialString) {
+    return functions.reduce(
+      (processedString, func) => func(processedString),
+      initialString
+    );
+  };
+}
+
+/**
+ * A composed function that trims leading and trailing whitespaces and replaces multiple spaces with a single space.
+ * @param {string} initialString - The initial string.
+ * @returns {string} - The processed string.
+ */
+export const trimUsingCompose = compose(singleSpace, trimTrailing, trimLeading);
+
+/**
+ * A piped function that trims leading and trailing whitespaces and replaces multiple spaces with a single space.
+ * @param {string} initialString - The initial string.
+ * @returns {string} - The processed string.
+ */
+export const trimUsingPipe = pipe(trimLeading, trimTrailing, singleSpace);
