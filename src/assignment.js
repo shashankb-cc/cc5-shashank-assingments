@@ -193,7 +193,7 @@ export function getSecondLargestNumber(numbers) {
       secondLargest = number;
     }
   });
-  return secondLargest ;
+  return secondLargest;
 }
 
 /**
@@ -214,7 +214,7 @@ export function getSecondLargestElementWithReduce(nums) {
     },
     [Number.MIN_VALUE, Number.MIN_VALUE] // Initial values
   );
-  return secondLargest ;
+  return secondLargest;
 }
 
 /**
@@ -350,3 +350,383 @@ export function getStringContainingAllEmails(employees) {
     }
   }, "");
 }
+
+/**
+ * Finds the fruit or nut with the highest nutrition content for each nutrient.
+ * @param {Array} fruitsAndNuts - An array of objects representing fruits or nuts, each containing nutritional information.
+ * @returns {Object} An object containing a key for each nutrient, and the value is the name of the fruit or nut with the highest content of that nutrient.
+ */
+export function findFruitOrNutWithHighestNutrition(fruitsAndNuts) {
+  let nutritionValues = {};
+  return fruitsAndNuts.reduce((nutritionAndFruit, currentFruit) => {
+    Object.entries(currentFruit.nutritions).forEach(([key, value]) => {
+      if (Object.keys(nutritionAndFruit).includes(key)) {
+        if (value > nutritionValues[key]) {
+          nutritionAndFruit[key] = currentFruit.name;
+          nutritionValues[key] = value;
+        }
+      } else {
+        nutritionAndFruit[key] = currentFruit.name;
+        nutritionValues[key] = value;
+      }
+    });
+    return nutritionAndFruit;
+  }, {});
+}
+
+/**
+ * Retrieves an array of unique nutrition types from an array of fruits.
+ * @param {Array<Object>} fruitsAndNuts - An array of fruit objects, each containing nutrition information.
+ * @returns {Array<string>} - An array containing unique nutrition types present in the provided fruits.
+ */
+export function getArrayOfUniqueNutritions(fruitsAndNuts) {
+  return fruitsAndNuts.reduce((arrayWithFruitsAndNuts, currentFruit) => {
+    Object.keys(currentFruit.nutritions).map((nutrition) => {
+      if (!arrayWithFruitsAndNuts.includes(nutrition)) {
+        arrayWithFruitsAndNuts.push(nutrition);
+      }
+    });
+    return arrayWithFruitsAndNuts;
+  }, []);
+}
+
+/**
+ * Retrieves an array of unique health conditions treated by the given fruits.
+ * @param {Array<Object>} fruitsAndNuts - An array of fruit objects, each containing health condition treatment information.
+ * @returns {Array<string>} - An array containing unique health conditions treated by the provided fruits.
+ */
+export function getArrayOfUniqueHealthConditions(fruitsAndNuts) {
+  return fruitsAndNuts.reduce((arrayWithHeathCondition, currentFruit) => {
+    currentFruit.treats.map((treat) => {
+      if (!arrayWithHeathCondition.includes(treat)) {
+        arrayWithHeathCondition.push(treat);
+      }
+    });
+    return arrayWithHeathCondition;
+  }, []);
+}
+
+/**
+ * Retrieves an array containing common health conditions treated by all nut fruits.
+ * @param {Array<Object>} fruitsAndNuts - An array of fruit objects containing health condition treatment information.
+ * @returns {Array<string>} - An array containing common health conditions treated by all nut fruits.
+ */
+export function getArrayOfCommonHealthConditions(fruitsAndNuts) {
+  return fruitsAndNuts
+    .filter((fruitInfo) => fruitInfo.type === "nut")
+    .map((fruitTreat) => fruitTreat.treats)
+    .reduce((commonTreats, currentTreats) => {
+      if (commonTreats.length === 0) {
+        return currentTreats;
+      }
+      return commonTreats.filter((treat) => currentTreats.includes(treat));
+    }, []);
+}
+/**
+ * Modifies an array of fruit and nut objects by adding a 'totalNutrition' property to each object,
+ * representing the total number of nutritional values present in the 'nutritions' object.
+ * @param {Array<Object>} fruitsAndNuts - An array of fruit and nut objects containing nutritional information.
+ * @returns {Array<Object>} - The modified array of fruit and nut objects with the 'totalNutrition' property added.
+ */
+export function modifiedFruitsAndNutsArray(fruitsAndNuts) {
+  return fruitsAndNuts.map((fruitOrNut) => {
+    const nutritionValues = Object.values(fruitOrNut.nutritions);
+    const totalNutrition = nutritionValues.reduce((acc, val) => acc + val, 0);
+    fruitOrNut.totalNutrition = totalNutrition;
+    return fruitOrNut;
+  });
+}
+
+export function getTotalNutritionValueOfAll(fruitsAndNuts) {
+  const sumNutritions = (items) => {
+    return items.reduce((acc, item) => {
+      for (const [key, value] of Object.entries(item.nutritions)) {
+        if (acc[key] === undefined) {
+          acc[key] = value;
+        } else {
+          acc[key] += value;
+        }
+      }
+      return acc;
+    }, {});
+  };
+
+  const fruits = fruitsAndNuts.filter((item) => item.type === "fruit");
+  const nuts = fruitsAndNuts.filter((item) => item.type === "nut");
+
+  return {
+    fruits: sumNutritions(fruits),
+    nuts: sumNutritions(nuts),
+  };
+}
+
+/**
+ * Retrieves an array of names of fruits and nuts that treat bone issues.
+ * @param {Array<Object>} fruitsAndNuts - An array of fruit and nut objects containing health condition treatment information.
+ * @returns {Array<string>} - An array containing names of fruits and nuts that treat bone issues.
+ */
+export function fruitsOrNutsSolvingBoneIssue(fruitsAndNuts) {
+  return fruitsAndNuts
+    .filter((fruitOrNut) =>
+      Object.values(fruitOrNut.treats).includes("bone issues")
+    )
+    .map((fruitObject) => fruitObject.name);
+}
+
+/**
+ * Retrieves the name(s) of the fruit(s) or nut(s) with the maximum number of nutrition types.
+ * @param {Array<Object>} fruitAndNutArray - An array of fruit and nut objects containing nutritional information.
+ * @returns {Array<string>} - An array containing the name(s) of the fruit(s) or nut(s) with the maximum number of nutrition types.
+ */
+export function fruitOrNutWithMaximumNutritionTypes(fruitAndNutArray) {
+  let largest = 0;
+  return modifiedFruitsAndNutsArray(fruitAndNutArray).reduce(
+    (maxNutritionFruit, currentFruitOrNut) => {
+      if (currentFruitOrNut.totalNutrition >= largest) {
+        largest = currentFruitOrNut.totalNutrition;
+        maxNutritionFruit.push(currentFruitOrNut.name);
+      }
+      return maxNutritionFruit;
+    },
+    []
+  );
+}
+
+/**
+ * Finds fruits or nuts that are effective in treating migraines and have vitamin content greater than or equal to 60.
+ * @param {object[]} fruitsAndNuts - An array of fruit and nut objects.
+ * @returns {string[]} - An array containing names of fruits or nuts meeting the criteria.
+ */
+export function findMigraineSolversWithVitamins(fruitsAndNuts) {
+  return fruitsAndNuts
+    .filter(
+      (item) =>
+        item.treats.includes("migraine") && item.nutritions.vitamins >= 60
+    )
+    .map((item) => item.name);
+}
+
+/**
+ * Finds the fruit or nut with the lowest carb content.
+ * @param {object[]} fruitsAndNuts - An array of fruit and nut objects.
+ * @returns {string} - The name of the fruit or nut with the lowest carb content.
+ */
+export function findLowestCarbFruitOrNut(fruitsAndNuts) {
+  const itemsWithCarbs = fruitsAndNuts.filter(
+    (item) => item.nutritions.carbs !== undefined
+  );
+  const lowestCarbItem = itemsWithCarbs.reduce((lowest, item) => {
+    return item.nutritions.carbs < lowest.nutritions.carbs ? item : lowest;
+  }, itemsWithCarbs[0]);
+  return lowestCarbItem.name;
+}
+
+/**
+ * Calculates the total protein intake from nuts that treat sugar issues.
+ * @param {object[]} fruitsAndNuts - An array of fruit and nut objects.
+ * @returns {number} - The total protein intake from nuts treating sugar issues.
+ */
+export function totalProteinIntake(fruitsAndNuts) {
+  return fruitsAndNuts
+    .filter((item) => item.type === "nut" && item.treats.includes("sugar"))
+    .reduce((total, item) => total + item.nutritions.protein, 0);
+}
+
+/**
+ * Calculates the total vitamins intake from fruits and nuts excluding those with sugar content.
+ * @param {object[]} fruitsAndNuts - An array of fruit and nut objects.
+ * @returns {number} - The total vitamins intake from fruits and nuts excluding those with sugar content.
+ */
+export function totalVitaminsIntakeWithoutSugarNutrition(fruitsAndNuts) {
+  const fruitsWithoutSugar = fruitsAndNuts.filter(
+    (item) =>
+      (item.type === "fruit" && item.nutritions.sugar === undefined) ||
+      item.type === "nut"
+  );
+  const totalVitamins = fruitsWithoutSugar.reduce(
+    (total, item) => total + item.nutritions.vitamins,
+    0
+  );
+
+  return totalVitamins;
+}
+
+/**
+ * Generates an object containing odd and even numbers up to n.
+ * @param {number} n - The maximum number.
+ * @returns {object} - An object containing arrays of odd and even numbers.
+ */
+export function getOddEvenNumbersSum(n) {
+  let numbers = [];
+  for (let i = 1; i <= n; i++) {
+    numbers.push(i);
+  }
+
+  function getOddEvenNumbers(numbers) {
+    return numbers.reduce(
+      (acc, num) => {
+        if (num % 2 === 0) {
+          acc.even.push(num);
+        } else {
+          acc.odd.push(num);
+        }
+        return acc;
+      },
+      { odd: [], even: [] }
+    );
+  }
+
+  return getOddEvenNumbers(numbers);
+}
+
+/**
+ * Calculates the sum of odd and even numbers from the provided object.
+ * @param {object} oddEvenNumbers - An object containing arrays of odd and even numbers.
+ * @returns {object} - An object containing the sum of odd and even numbers.
+ */
+export function calculateSumOfOddAndEven(oddEvenNumbers) {
+  const oddSum = oddEvenNumbers.odd.reduce((sum, num) => sum + num, 0);
+  const evenSum = oddEvenNumbers.even.reduce((sum, num) => sum + num, 0);
+  const result = {
+    odd: oddSum,
+    even: evenSum,
+  };
+
+  return result;
+}
+
+/**
+ * Generates an array of alphabets from a starting letter to an ending letter.
+ * @param {string} startingLetter - The starting letter.
+ * @param {string} endingLetter - The ending letter.
+ * @returns {string[]} - An array of alphabets from startingLetter to endingLetter.
+ */
+export function generateAlphabets(startingLetter, endingLetter) {
+  const alphabets = [];
+  const startingCharCode = startingLetter.charCodeAt(0);
+  const endingCharCode = endingLetter.charCodeAt(0);
+  for (let i = startingCharCode; i <= endingCharCode; i++) {
+    alphabets.push(String.fromCharCode(i));
+  }
+  return alphabets;
+}
+
+/**
+ * Generates an object containing vowels and consonants from the provided array of alphabets.
+ * @param {string[]} alphabets - An array of alphabets.
+ * @returns {object} - An object containing arrays of vowels and consonants.
+ */
+export function generateAlphabetObject(alphabets) {
+  const vowels = alphabets.filter((letter) => "aeiou".includes(letter));
+  const consonants = alphabets.filter((letter) => !"aeiou".includes(letter));
+  const result = {
+    vowels: vowels,
+    consonants: consonants,
+  };
+
+  return result;
+}
+
+/**
+ * Retrieves the names of all actors without duplicates from the provided movie data.
+ * @param {object[]} movieData - An array of movie objects.
+ * @returns {string[]} - An array containing names of all actors.
+ */
+export function getAllActorsName(movieData) {
+  return movieData
+    .map((item) => item.cast)
+    .reduce((actorsArray, castArray) => {
+      castArray.forEach((actor) => {
+        if (!actorsArray.includes(actor)) {
+          actorsArray = [...actorsArray, actor];
+        }
+      });
+      return actorsArray;
+    }, []);
+}
+
+/**
+ * Retrieves up to three movie titles per year from the provided movie data.
+ * @param {object[]} movieData - An array of movie objects.
+ * @returns {object} - An object containing movie titles per year.
+ */
+export function getThreeMoviesPerYear(movieData) {
+  return movieData.reduce((moviesObject, movie) => {
+    if (!moviesObject[movie.year]) {
+      moviesObject[movie.year] = [];
+    }
+    if (moviesObject[movie.year].length < 3) {
+      moviesObject[movie.year] = [...moviesObject[movie.year], movie.title];
+    }
+    return moviesObject;
+  }, {});
+}
+
+/**
+ * Trims leading whitespaces from the provided string.
+ * @param {string} str - The input string.
+ * @returns {string} - The string with leading whitespaces removed.
+ */
+function trimLeading(str) {
+  return str.replace(/^\s+/, "");
+}
+
+/**
+ * Trims trailing whitespaces from the provided string.
+ * @param {string} str - The input string.
+ * @returns {string} - The string with trailing whitespaces removed.
+ */
+function trimTrailing(str) {
+  return str.replace(/\s+$/, "");
+}
+
+/**
+ * Replaces multiple spaces between words with a single space in the provided string.
+ * @param {string} str - The input string.
+ * @returns {string} - The string with multiple spaces replaced by a single space.
+ */
+function singleSpace(str) {
+  return str.replace(/\s+/g, " ");
+}
+
+/**
+ * Composes multiple functions into a single function that processes an initial string from right to left.
+ * @param  {...function} functions - The functions to implement compose.
+ * @returns {function} - The composed function.
+ */
+function compose(...functions) {
+  return function (initialString) {
+    return functions.reduceRight(
+      (processedString, func) => func(processedString),
+      initialString
+    );
+  };
+}
+
+/**
+ * Pipes multiple functions into a single function that processes an initial string from left to right.
+ * @param  {...function} functions - The functions to implement pipe.
+ * @returns {function} - The piped function.
+ */
+function pipe(...functions) {
+  return function (initialString) {
+    return functions.reduce(
+      (processedString, func) => func(processedString),
+      initialString
+    );
+  };
+}
+
+/**
+ * A composed function that trims leading and trailing whitespaces and replaces multiple spaces with a single space.
+ * @param {string} initialString - The initial string.
+ * @returns {string} - The processed string.
+ */
+export const trimUsingCompose = compose(singleSpace, trimTrailing, trimLeading);
+
+/**
+ * A piped function that trims leading and trailing whitespaces and replaces multiple spaces with a single space.
+ * @param {string} initialString - The initial string.
+ * @returns {string} - The processed string.
+ */
+export const trimUsingPipe = pipe(trimLeading, trimTrailing, singleSpace);

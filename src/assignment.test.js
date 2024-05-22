@@ -1,4 +1,4 @@
-import { expect, test } from "vitest";
+import { afterAll, beforeEach, describe, expect, test } from "vitest";
 import {
   fibonacciNumbersAtIndices,
   generateFahrenheitArray,
@@ -24,6 +24,26 @@ import {
   totalSalaryPaidToEmployees,
   getFullNameOfEmployees,
   getStringContainingAllEmails,
+  findFruitOrNutWithHighestNutrition,
+  getArrayOfUniqueNutritions,
+  getArrayOfUniqueHealthConditions,
+  getArrayOfCommonHealthConditions,
+  modifiedFruitsAndNutsArray,
+  fruitsOrNutsSolvingBoneIssue,
+  fruitOrNutWithMaximumNutritionTypes,
+  getTotalNutritionValueOfAll,
+  findMigraineSolversWithVitamins,
+  findLowestCarbFruitOrNut,
+  totalProteinIntake,
+  totalVitaminsIntakeWithoutSugarNutrition,
+  getOddEvenNumbersSum,
+  calculateSumOfOddAndEven,
+  generateAlphabets,
+  generateAlphabetObject,
+  getAllActorsName,
+  getThreeMoviesPerYear,
+  trimUsingCompose,
+  trimUsingPipe,
 } from "./assignment";
 
 // Tests for question 1 and 2
@@ -805,6 +825,333 @@ water 20`);
     ];
     expect(getStringContainingAllEmails(employees)).toEqual(
       "mollyrojas@plasmox.com, margueritesantiago@plasmox.com, evelynoneil@plasmox.com, consuelocase@plasmox.com, earlinebush@plasmox.com, sanfordhurley@plasmox.com, toddgomez@plasmox.com"
+    );
+  });
+});
+describe("Tests for Question 15", () => {
+  let fruits;
+  beforeEach(() => {
+    fruits = [
+      {
+        name: "Banana",
+        type: "fruit",
+        treats: [
+          "constipation",
+          "vitamin deficiency",
+          "skin issues",
+          "sleep problems",
+        ],
+        nutritions: {
+          protein: 8,
+          carbs: 40,
+          sugar: 30,
+          vitamins: 45,
+        },
+      },
+      {
+        name: "Badam",
+        type: "nut",
+        treats: ["bp", "protein deficiency", "skin issues", "sugar"],
+        nutritions: {
+          protein: 18,
+          carbs: 20,
+          sugar: 20,
+          vitamins: 65,
+        },
+      },
+      {
+        name: "Cashew",
+        type: "nut",
+        treats: ["bp", "protein deficiency", "skin issues", "bone issues"],
+        nutritions: {
+          protein: 22,
+          carbs: 22,
+          vitamins: 60,
+        },
+      },
+      {
+        name: "Wallnut",
+        type: "nut",
+        treats: ["bp", "protein deficiency", "skin issues", "bone issues"],
+        nutritions: {
+          protein: 33,
+          carbs: 26,
+          vitamins: 64,
+        },
+      },
+      {
+        name: "Apple",
+        type: "fruit",
+        treats: ["heart problems", "skin issues", "bone issues", "migraine"],
+        nutritions: {
+          protein: 22,
+          carbs: 22,
+          vitamins: 60,
+        },
+      },
+    ];
+  });
+  afterAll(() => {
+    fruits = null;
+  });
+  //Test block for findFruitOrNutWithHighestNutritio
+  test("Object with nutrition and fruit or nut containing highest of that nutrition", () => {
+    expect(findFruitOrNutWithHighestNutrition(fruits)).toEqual({
+      carbs: "Banana",
+      protein: "Wallnut",
+      sugar: "Banana",
+      vitamins: "Badam",
+    });
+  });
+
+  //Test block for unique nutrition values
+  test("Array with unique nutrition values", () => {
+    expect(getArrayOfUniqueNutritions(fruits)).toEqual([
+      "protein",
+      "carbs",
+      "sugar",
+      "vitamins",
+    ]);
+  });
+
+  //Test block fpr unique health traits
+  test("Array with unique health conditions ", () => {
+    expect(getArrayOfUniqueHealthConditions(fruits)).toEqual([
+      "constipation",
+      "vitamin deficiency",
+      "skin issues",
+      "sleep problems",
+      "bp",
+      "protein deficiency",
+      "sugar",
+      "bone issues",
+      "heart problems",
+      "migraine",
+    ]);
+  });
+
+  //Test block for getting common health traits among the nuts
+  test("Get common health traits cured by nuts", () => {
+    expect(getArrayOfCommonHealthConditions(fruits)).toEqual([
+      "bp",
+      "protein deficiency",
+      "skin issues",
+    ]);
+  });
+
+  //Test block for modified fruitAndNutArray
+  test("Get modified fruitAndNutArray with key called totalNutrition", () => {
+    expect(modifiedFruitsAndNutsArray(fruits)).toEqual([
+      {
+        name: "Banana",
+        type: "fruit",
+        treats: [
+          "constipation",
+          "vitamin deficiency",
+          "skin issues",
+          "sleep problems",
+        ],
+        nutritions: { protein: 8, carbs: 40, sugar: 30, vitamins: 45 },
+        totalNutrition: 123,
+      },
+      {
+        name: "Badam",
+        type: "nut",
+        treats: ["bp", "protein deficiency", "skin issues", "sugar"],
+        nutritions: { protein: 18, carbs: 20, sugar: 20, vitamins: 65 },
+        totalNutrition: 123,
+      },
+      {
+        name: "Cashew",
+        type: "nut",
+        treats: ["bp", "protein deficiency", "skin issues", "bone issues"],
+        nutritions: { protein: 22, carbs: 22, vitamins: 60 },
+        totalNutrition: 104,
+      },
+      {
+        name: "Wallnut",
+        type: "nut",
+        treats: ["bp", "protein deficiency", "skin issues", "bone issues"],
+        nutritions: { protein: 33, carbs: 26, vitamins: 64 },
+        totalNutrition: 123,
+      },
+      {
+        name: "Apple",
+        type: "fruit",
+        treats: ["heart problems", "skin issues", "bone issues", "migraine"],
+        nutritions: { protein: 22, carbs: 22, vitamins: 60 },
+        totalNutrition: 104,
+      },
+    ]);
+  });
+
+  //Test block for total nutrition values
+  test("Test block for total nutrition of fruits and nuts", () => {
+    expect(getTotalNutritionValueOfAll(fruits)).toEqual({
+      fruits: { protein: 30, carbs: 62, sugar: 30, vitamins: 105 },
+      nuts: { protein: 73, carbs: 68, sugar: 20, vitamins: 189 },
+    });
+  });
+
+  //Test block for which treats bone issue
+  test("Fruits or nuts that solves bone issue", () => {
+    expect(fruitsOrNutsSolvingBoneIssue(fruits)).toEqual([
+      "Cashew",
+      "Wallnut",
+      "Apple",
+    ]);
+  });
+
+  //Test block for fruit or nuts with max nutrition types
+  test("Get the fruits or nuts with maximun nutrtion types", () => {
+    expect(fruitOrNutWithMaximumNutritionTypes(fruits)).toEqual([
+      "Banana",
+      "Badam",
+      "Wallnut",
+    ]);
+  });
+
+  //Test block migraine solver and vit value >60
+  test("Test block to find the fruit or nut soves migraine and vitamin value >= 60", () => {
+    expect(findMigraineSolversWithVitamins(fruits)).toEqual(["Apple"]);
+  });
+
+  //Test block to find the fruit or nut with lowest carbs
+  test("Test block for fruit or nut with the lowest carbs", () => {
+    expect(findLowestCarbFruitOrNut(fruits)).toBe("Badam");
+  });
+
+  //Test block to get total protien intake
+  test("est block to get total protien intake", () => {
+    expect(totalProteinIntake(fruits)).toBe(18);
+  });
+
+  //Test block to get the total protien intake
+  test("Test block to get the total protien intake", () => {
+    expect(totalVitaminsIntakeWithoutSugarNutrition(fruits)).toBe(249);
+  });
+});
+describe("Tests for Question 16-19", () => {
+  //Test block to get the sum of odd and even numbers
+  test("Test block to get the sum of odd and even numbers", () => {
+    const oddEvenNumbersResult = getOddEvenNumbersSum(5);
+    expect(oddEvenNumbersResult).toEqual({ odd: [1, 3, 5], even: [2, 4] });
+    expect(calculateSumOfOddAndEven(oddEvenNumbersResult)).toEqual({
+      even: 6,
+      odd: 9,
+    });
+
+    const oddEvenNumbersResults = getOddEvenNumbersSum(7);
+    expect(oddEvenNumbersResults).toEqual({
+      odd: [1, 3, 5, 7],
+      even: [2, 4, 6],
+    });
+    expect(calculateSumOfOddAndEven(oddEvenNumbersResults)).toEqual({
+      even: 12,
+      odd: 16,
+    });
+  });
+
+  //Test block to seperate the vowels and consonants from the array of alphabets
+  test("Test block to seperate the vowels and consonants from the array of alphabets", () => {
+    const alphabets = generateAlphabets("a", "z");
+    expect(alphabets).toEqual([
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f",
+      "g",
+      "h",
+      "i",
+      "j",
+      "k",
+      "l",
+      "m",
+      "n",
+      "o",
+      "p",
+      "q",
+      "r",
+      "s",
+      "t",
+      "u",
+      "v",
+      "w",
+      "x",
+      "y",
+      "z",
+    ]);
+    expect(generateAlphabetObject(alphabets)).toEqual({
+      consonants: [
+        "b",
+        "c",
+        "d",
+        "f",
+        "g",
+        "h",
+        "j",
+        "k",
+        "l",
+        "m",
+        "n",
+        "p",
+        "q",
+        "r",
+        "s",
+        "t",
+        "v",
+        "w",
+        "x",
+        "y",
+        "z",
+      ],
+      vowels: ["a", "e", "i", "o", "u"],
+    });
+
+    const alphabetsArray = generateAlphabets("a", "d");
+    expect(alphabetsArray).toEqual(["a", "b", "c", "d"]);
+    expect(generateAlphabetObject(alphabetsArray)).toEqual({
+      consonants: ["b", "c", "d"],
+      vowels: ["a"],
+    });
+  });
+
+  //Test block to get all actors name
+  const movieData = require("./movies.json");
+  test("Get all actors name in the movie", () => {
+    const actorsArray = getAllActorsName(movieData);
+    const fs = require("fs");
+    fs.writeFileSync("./src/actors.json", actorsArray.toString(), "utf-8");
+  });
+
+  //Test block to get three movies per year
+  test("Claasified movies based on year", () => {
+    expect(getThreeMoviesPerYear(movieData)).toEqual({
+      2017: ["The Book of Love", "Split", "xXx: Return of Xander Cage"],
+      2018: ["Insidious: The Last Key", "The Strange Ones", "Sweet Country"],
+    });
+  });
+
+  //Test block for building a trim function using compose and pipe methods
+  test("Compose and pipe functions to trim a string with trailing ,leading and extra spaces", () => {
+    expect(
+      trimUsingCompose("    My   Name  is        Shashank          ")
+    ).toBe("My Name is Shashank");
+    expect(trimUsingCompose("Hello Everyone       ")).toBe("Hello Everyone");
+    expect(trimUsingCompose("I am      a student")).toBe("I am a student");
+    expect(trimUsingCompose("     CodeCraft Technologies")).toBe(
+      "CodeCraft Technologies"
+    );
+
+    expect(trimUsingPipe("    My   Name  is        Shashank          ")).toBe(
+      "My Name is Shashank"
+    );
+    expect(trimUsingPipe("Hello Everyone       ")).toBe("Hello Everyone");
+    expect(trimUsingPipe("I am      a student")).toBe("I am a student");
+    expect(trimUsingPipe("     CodeCraft Technologies")).toBe(
+      "CodeCraft Technologies"
     );
   });
 });
