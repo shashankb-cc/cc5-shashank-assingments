@@ -1,3 +1,4 @@
 node_modules/
 *.json
 coverage/
+movies.json:Zone.Identifier
