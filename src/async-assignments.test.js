@@ -1,9 +1,15 @@
-import { describe, expect, test } from "vitest";
+import { describe, expect, getRunningMode, test } from "vitest";
 import {
   sizeOfFileAtPathSync,
   sizeOfFileAtPathAsync,
   flattenFileHierarchySync,
   flattenFileHierarchyAsync,
+  sizeOfFileAtPathUsingPromises,
+  promisifiedReaddir,
+  promisifiedStat,
+  flattenFileHeirarchyUsingPromises,
+  getStarWarsPersonNameUsingAsyncAwait,
+  fetchPersonNamesFromOneToThree,
 } from "./async-assignments";
 
 describe("TO find the size of files or directory ", () => {
@@ -41,7 +47,7 @@ describe("TO find the size of files or directory ", () => {
         console.error("Error:", error);
       } else {
         console.log("Result:", result);
-        expect(result).toEqual([
+        expect(result).toStrictEqual([
           "/home/shashankb/main-dir/file-1.txt",
           "/home/shashankb/main-dir/file2.txt",
           "/home/shashankb/main-dir/sub-dir/file-1.txt",
@@ -51,5 +57,46 @@ describe("TO find the size of files or directory ", () => {
         ]);
       }
     });
+  });
+  test("Tests for promisified fs.stat()", () => {
+    const filePath = "/home/shashankb/Node-project/src/Stack.js";
+    expect(promisifiedStat(filePath)).resolves.toMatchObject({ size: 392 });
+  });
+  test("Tests for promisified fs.readdir()", () => {
+    const directoryPath = "/home/shashankb/main-dir/";
+    expect(promisifiedReaddir(directoryPath)).resolves.toEqual([
+      "file-1.txt",
+      "file2.txt",
+      "sub-dir",
+    ]);
+  });
+  test("Tests for promisified getting file size at given path", () => {
+    //For a single file
+    const filePath = "/home/shashankb/Node-project/src/Stack.js";
+    expect(sizeOfFileAtPathUsingPromises(filePath)).resolves.toBe(392);
+
+    //For a folder
+    const directoryPath = "/home/shashankb/main-dir/";
+    expect(sizeOfFileAtPathUsingPromises(directoryPath)).resolves.toBe(44);
+  });
+  test("Tests for getting file hierarchy using promises", () => {
+    const filePath = "/home/shashankb/main-dir/";
+    expect(flattenFileHeirarchyUsingPromises(filePath)).resolves.toStrictEqual([
+      "/home/shashankb/main-dir/file-1.txt",
+      "/home/shashankb/main-dir/file2.txt",
+      "/home/shashankb/main-dir/sub-dir/file-1.txt",
+      "/home/shashankb/main-dir/sub-dir/file2.txt",
+      "/home/shashankb/main-dir/sub-dir/sub-dir-2/file-1.txt",
+      "/home/shashankb/main-dir/sub-dir/sub-dir-2/file2.txt",
+    ]);
+  });
+  test("Tests to get the person with id 3", async () => {
+    const personId = 3;
+    const personInfo = await getStarWarsPersonNameUsingAsyncAwait(personId);
+    expect(personInfo).toBe("R2-D2");
+  });
+  test("Tests to get the names of the first three persons", async () => {
+    const names = await fetchPersonNamesFromOneToThree(3);
+    expect(names).toEqual(["Luke Skywalker", "C-3PO", "R2-D2"]);
   });
 });
